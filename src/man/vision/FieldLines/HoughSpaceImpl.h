@@ -1,4 +1,5 @@
 #include "HoughSpace.h"
+#include <vector>
 
 namespace man {
 namespace vision {
@@ -10,14 +11,14 @@ public:
     virtual ~HoughSpaceImpl() {};
 
     virtual std::list<std::pair<HoughLine, HoughLine> >
-    findLines(Gradient& g);
+    findLines(Gradient& g, std::vector<HoughLine>& l);
     virtual uint16_t getHoughBin(int r, int t);
 
 protected:
     /**
      * Locate the lines in the image using a Hough Transform
      */
-    void findHoughLines(Gradient& g);
+    void findHoughLines(Gradient& g, std::vector<HoughLine>& l);
 
     /**
      * Process hough lines to eliminate duplicate lines and pair up

@@ -22,22 +22,23 @@ HoughSpaceImpl::HoughSpaceImpl() :
 {
 }
 
-list<pair<HoughLine, HoughLine> >
-HoughSpaceImpl::findLines(Gradient& g)
+void HoughSpaceImpl::findLines(Gradient& g, std::vector<HoughLine>& l)
 {
     reset();
-    findHoughLines(g);
-    list<pair<HoughLine, HoughLine> > lines = narrowHoughLines();
-
-    return lines;
+    findHoughLines(g, l);
+    refineHoughLines(g, l);
 }
 
-void HoughSpaceImpl::findHoughLines(Gradient& g)
+void HoughSpaceImpl::findHoughLines(Gradient& g, std::vector<HoughLine>& l)
 {
     markEdges(g);
     smooth();
     peaks();
     createLinesFromPeaks(activeLines);
+
+    for (int i = 0; i < activeLines.size(); i++) {
+        l.push_back(activeLines[i]);
+    }
 }
 
 list<pair<HoughLine, HoughLine> > HoughSpaceImpl::narrowHoughLines()

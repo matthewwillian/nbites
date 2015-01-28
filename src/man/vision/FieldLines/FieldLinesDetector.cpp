@@ -51,7 +51,7 @@ void FieldLinesDetector::findHoughLines(int upperBound,
 {
     mGradient->reset();
     mEdges->detectEdges(upperBound, field_edge, img, *mGradient);
-    mHoughLines = mHough->findLines(*mGradient);
+    mHough->findLines(*mGradient, mHoughLines);
 }
 
 /**

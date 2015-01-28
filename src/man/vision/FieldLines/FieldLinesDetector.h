@@ -53,9 +53,11 @@ private:
     boost::shared_ptr<EdgeDetector> mEdges;
     boost::shared_ptr<Gradient> mGradient;
 
-    std::list<std::pair<HoughLine, HoughLine> > mHoughLines;
-    std::vector<HoughVisualLine> mLines;
-    std::list<VisualCorner> mCorners;
+    std::vector<HoughLine> mHoughLines;
+    //std::list<std::pair<HoughLine, HoughLine> > mFieldLines;
+    //std::vector<HoughVisualLine> mLines;
+    //std::list<VisualCorner> mCorners;
+
     boost::shared_ptr<HoughSpace> mHough;
 };
 
