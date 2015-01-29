@@ -6,20 +6,19 @@
 namespace man {
 namespace vision {
 
-class HoughVisualLine
+// TODO implement fixed camera params class
+// TODO implement projective transformation stuff
+
+class FieldLine
 {
 public:
-    HoughVisualLine(const HoughLine& a, const HoughLine& b) :
-        mLines(a, b)
-    {}
-
-    virtual ~HoughVisualLine() {}
-
-    std::pair<HoughLine, HoughLine> getHoughLines() const { return mLines; }
-    bool intersects(const HoughVisualLine& other, point<int>& out) const;
+    FieldLine(const HoughLine& a, const HoughLine& b, const FixedCameraParams& p);
+    ~FieldLine() {}
+    std::pair<HoughLine, HoughLine> getHoughLines() const { return lines; }
 
 private:
-    std::pair<HoughLine, HoughLine> mLines;
+    std::pair<HoughLine, HoughLine> lines;
+    const FixedCameraParams& params;
 };
 
 }

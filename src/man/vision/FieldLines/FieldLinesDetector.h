@@ -3,6 +3,7 @@
 
 #include <list>
 #include <vector>
+
 namespace man {
 namespace vision {
 	class HoughSpace;
@@ -37,26 +38,23 @@ public:
     std::list<HoughLine> getHoughLines() const;
 
     // FieldLines interface
-    std::vector<HoughVisualLine> getLines() {
-        return mLines;
+    std::vector<FieldLine> getLines() {
+        return mFieldLines;
     };
-    std::list<VisualCorner> getCorners() {
-        return mCorners;
-    }
 
 private:
     void findHoughLines(int upperBound,
                         int* field_edge,
                         const uint16_t *img);
+    void refineHoughLines();
     void findFieldLines();
+
 
     boost::shared_ptr<EdgeDetector> mEdges;
     boost::shared_ptr<Gradient> mGradient;
 
     std::vector<HoughLine> mHoughLines;
-    //std::list<std::pair<HoughLine, HoughLine> > mFieldLines;
-    //std::vector<HoughVisualLine> mLines;
-    //std::list<VisualCorner> mCorners;
+    std::vector<FieldLine> mFieldLines;
 
     boost::shared_ptr<HoughSpace> mHough;
 };

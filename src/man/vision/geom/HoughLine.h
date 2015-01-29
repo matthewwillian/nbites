@@ -4,6 +4,7 @@
 #include <iostream>
 #include <math.h>
 #include "../FieldLines/Gradient.h"
+#include "FuzzyLogic.h"
 
 namespace man {
 namespace vision {
@@ -67,6 +68,9 @@ public:
         return false;
     }
 
+    // TODO
+    void refine(Gradient const &g, RefinementParams& params); 
+
     /**
      * Check if this line intersects another.
      *
@@ -106,6 +110,7 @@ private:
     int rIndex, tIndex;    // Radius, angle indices in HoughSpace table
     float r, t;            // Radius and angle of line in polar coords
     int score;             // Hough accumulator count
+    double u0, u1;         // End points of line
 
     mutable float sinT, cosT;   // These get computed on the fly, if needed
     mutable bool didSin, didCos;
@@ -114,6 +119,17 @@ private:
         acceptable_angle_diff = 5,
         acceptable_xy_diff = 5,
     };
+};
+
+struct RefinementParams {
+    RefinementParams(FuzzyThr angleThr_, FuzzyThr distThr_, 
+                     FuzzyThr magnThr_, double lineEndWeight_) :
+        angleThr(angleThr_), distThr(distThr_), 
+        magnThr(magnThr_), lineEndWeight(lineEndWeight_) {}
+    FuzzyThr angleThr;
+    FuzzyThr distThr;
+    FuzzyThr magnThr;
+    double lineEndWeight;
 };
 
 }

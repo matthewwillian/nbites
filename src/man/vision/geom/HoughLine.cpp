@@ -13,11 +13,9 @@ namespace man {
 namespace vision {
 
 HoughLine::HoughLine() :
-    rIndex(0), tIndex(0), r(0), t(0), score(0),
+    rIndex(0), tIndex(0), r(0), t(0), score(0), u0(-200), u1(200)
     sinT(0), cosT(0), didSin(false), didCos(false)
-{
-
-}
+{}
 
 HoughLine::HoughLine(int _r_Indexbit, int _t_Indexbit, int _score) :
     rIndex(_r_Indexbit), tIndex(_t_Indexbit),
