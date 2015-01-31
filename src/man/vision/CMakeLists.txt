@@ -5,52 +5,17 @@ CMAKE_MINIMUM_REQUIRED( VERSION 2.8.3 )
 ADD_DEFINITIONS( -mmmx )
 
 ############################ PROJECT SOURCES FILES
-# Add here source files needed to compile this project
-SET( FIELD_LINES_SRCS
-  FieldLines/FieldLinesDetector
-  FieldLines/CornerDetector
-  FieldLines/HoughSpace
-  FieldLines/HoughSpaceImpl
-  FieldLines/EdgeDetector
-  FieldLines/Gradient
-  FieldLines/HoughVisualLine
-  FieldLines/HoughVisualCorner
-  geom/HoughLine
-  )
-
-SET( VISION_SRCS Ball
-                 Blob
-                 Blobs
-                 ConcreteCorner
-                 ConcreteLandmark
-                 ConcreteFieldObject
-                 ConcreteCross
-                 ConcreteLine
-                 Context
-                 Cross
-                 Field
-                 FieldLines.cpp
-                 ObjectFragments
-                 Robots
-                 Threshold
-                 Utility
-                 Vision
-		 VisionModule
-                 VisualBall
-                 VisualCrossbar
-                 VisualCorner
-                 VisualDetection
-                 VisualFieldEdge
-                 VisualLandmark
-                 VisualFieldObject
-		 VisualObstacle
-                 VisualRobot
-                 VisualCross
-                 VisualLine
-                 VisualDetector
-		 ${FIELD_LINES_SRCS}
-		 NaoPose
-                 )
+SET( VISION_SRCS 
+    CornerDetector
+    EdgeDetector
+    FieldLinesDetector
+    Gradient
+    HoughLine
+    HoughSpace
+    HoughSpaceImpl
+    HoughVisualLine
+    WeightedFit
+    )
 
 # Add the assembly files if we're not on Mac OSX
 IF (UNIX AND NOT APPLE)
