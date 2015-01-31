@@ -1,16 +1,8 @@
-
-
-############################ PROJECT NAME
-# The name of this cmake project
+############################ PROJECT DESCRIPTION
 PROJECT( VISION )
 CMAKE_MINIMUM_REQUIRED( VERSION 2.8.3 )
 
 ADD_DEFINITIONS( -mmmx )
-
-INCLUDE_DIRECTORIES( geom )
-INCLUDE_DIRECTORIES( fieldlines )
-INCLUDE_DIRECTORIES( . )
-
 
 ############################ PROJECT SOURCES FILES
 # Add here source files needed to compile this project
@@ -73,9 +65,7 @@ ENDIF()
 
 
 ############################ CHECK LIBRARY / EXECUTABLE OPTION
-# Configure the output execuatable or shared library, and the install
-# commands
-
+# Configure the output execuatable or shared library, and the install commands
 # Add static library target
 ADD_LIBRARY(
   vision
