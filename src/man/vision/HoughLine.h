@@ -3,8 +3,13 @@
 
 #include <iostream>
 #include <math.h>
-#include "../FieldLines/Gradient.h"
+#include "../Gradient.h"
 #include "FuzzyLogic.h"
+#include "FixedCameraParams.h"
+#include "Util.h"
+
+//TODO bill uses setUintVect (w/ typo) to set unit vector and then theta using slope
+//do we want to do this?
 
 namespace man {
 namespace vision {
@@ -27,6 +32,8 @@ public:
     inline int getRIndex()   const { return rIndex; }
     inline int getTIndex()   const { return tIndex; }
     inline int getScore()    const { return score;  }
+
+    inline point<double> getUnitVect() const { return unitVect;  }
 
     inline float getSinT() const {
         if (!didSin){
@@ -71,6 +78,15 @@ public:
     // TODO
     void refine(Gradient const &g, RefinementParams& params); 
 
+
+    /**TODO
+    * Returns   a new line that has been has been mapped through a transform
+    *           by roll and (x0, y0). translate then rotate
+    *
+    *           TODO should this modify line rather than return new one?
+    */
+    HoughLine transform(FixedCameraParams fcp);
+
     /**
      * Check if this line intersects another.
      *
@@ -81,7 +97,7 @@ public:
      *
      * @returns whether the lines intersect or not
      */
-    bool intersects(const HoughLine& other, point<int>& out) const;
+    bool intersects(const HoughLine& other, point<int>& out) const; //TODO why pointer to int
 
     /**
      * Test whether the intersection point is on screen for a given
@@ -110,7 +126,9 @@ private:
     int rIndex, tIndex;    // Radius, angle indices in HoughSpace table
     float r, t;            // Radius and angle of line in polar coords
     int score;             // Hough accumulator count
-    double u0, u1;         // End points of line
+    double u0, u1;         // End points of line TODO change name
+    
+    double Ux, Uy;         // Unit vector
 
     mutable float sinT, cosT;   // These get computed on the fly, if needed
     mutable bool didSin, didCos;
@@ -120,6 +138,8 @@ private:
         acceptable_xy_diff = 5,
     };
 };
+
+//TODO why is RefinementParams here?
 
 struct RefinementParams {
     RefinementParams(FuzzyThr angleThr_, FuzzyThr distThr_, 
