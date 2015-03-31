@@ -3,8 +3,8 @@
 #include <cmath>
 #include <iostream>
 
-#include "FieldLines/HoughConstants.h"
-#include "FieldLines/HoughSpace.h"
+#include "HoughConstants.h"
+#include "HoughSpace.h"
 
 using namespace std;
 using namespace VisionDef;

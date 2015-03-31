@@ -67,3 +67,33 @@ void register_funcs() {
     arg_test.func = arg_test_func;
     FUNCS.push_back(arg_test);
 }
+
+int HoughTest_fun() {
+    assert(args.size() == 1);
+    printf("HoughTest_func()\n");
+
+    logio::log_t log = logio::copyLog(&args[0]);
+
+    int width = 640;
+    int height = 480;
+    messages::YUVImage image(log.data, width, height, width);
+    portals::Message<messages::YUVImage> message(&image);
+    man::image::ImageConverterModule converterModule;
+
+    converterModule.imageIn.setMessage(message);
+    converterModule.run();
+
+    const messages::PackedImage16* yImage = converterModule.yImage.getMessage(true).get();
+
+    man::image::VisionModule visionModule;
+    portals::Message<messages::PackedImage16> message2(yImage);
+    visionModule.topYImage.setMessage(message2);
+    visionModule.run();
+
+    free(log.desc);
+    log.desc = (char*)malloc(name.size() + 1);
+    memcpy(log.desc, name.c_str(), name.size() +1);
+
+    rets.push_back(log);
+}
+

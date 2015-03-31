@@ -3,6 +3,8 @@
 
 #include <list>
 #include <vector>
+#include <boost/shared_ptr.hpp>
+
 namespace man {
 namespace vision {
 	class HoughSpace;
@@ -11,8 +13,8 @@ namespace vision {
 }
 }
 
-#include "geom/HoughLine.h"
-#include "VisualCorner.h"
+#include "HoughLine.h"
+#include "VisualCorner.h" //TODO we don't use this anymore
 #include "HoughVisualLine.h"
 
 namespace man {

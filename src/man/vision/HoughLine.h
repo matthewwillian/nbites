@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <math.h>
-#include "../FieldLines/Gradient.h"
+#include "Gradient.h"
 
 namespace man {
 namespace vision {

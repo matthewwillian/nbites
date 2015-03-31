@@ -1,7 +1,7 @@
 #ifndef _HOUGHVISUALLINE_H_
 #define _HOUGHVISUALLINE_H_
 
-#include "geom/HoughLine.h"
+#include "HoughLine.h"
 
 namespace man {
 namespace vision {

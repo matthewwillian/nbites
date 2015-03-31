@@ -5,7 +5,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "Gradient.h"
-#include "geom/HoughLine.h"
+#include "HoughLine.h"
 #include "ActiveArray.h"
 #include "HoughConstants.h"
 

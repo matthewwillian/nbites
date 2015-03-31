@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/matthewwillian/nbites/src/man/vision/EdgeDetection.s
+
+/home/matthewwillian/nbites/src/man/vision/Hough.s
+
+/home/matthewwillian/nbites/src/man/vision/HoughAlt.s
+

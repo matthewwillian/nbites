@@ -1,0 +1,1 @@
+/home/matthewwillian/nbites/src/man/vision/CMakeFiles/vision.dir
