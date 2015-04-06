@@ -14,13 +14,11 @@ INCLUDE_DIRECTORIES( . )
 # Add here source files needed to compile this project
 SET( FIELD_LINES_SRCS
   FieldLinesDetector
-  CornerDetector
   HoughSpace
   HoughSpaceImpl
   EdgeDetector
   Gradient
   HoughVisualLine
-  HoughVisualCorner
   HoughLine
   Utility
   )

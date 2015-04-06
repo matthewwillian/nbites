@@ -12,7 +12,6 @@ namespace vision {
 #include "Common.h"
 #include "Structs.h"
 #include "VisionDef.h"
-#include "VisualLandmark.h"
 #include "NBMath.h"
 
 // This class contains static utility functions which are used in many different
