@@ -18,9 +18,6 @@ CMakeFiles/vision.dir/EdgeDetector.cpp.o: EdgeDetector.cpp
 CMakeFiles/vision.dir/EdgeDetector.cpp.o: EdgeDetector.h
 CMakeFiles/vision.dir/EdgeDetector.cpp.o: Gradient.h
 
-CMakeFiles/vision.dir/FieldLinesDetector.cpp.o: ConcreteCorner.h
-CMakeFiles/vision.dir/FieldLinesDetector.cpp.o: ConcreteLandmark.h
-CMakeFiles/vision.dir/FieldLinesDetector.cpp.o: ConcreteLine.h
 CMakeFiles/vision.dir/FieldLinesDetector.cpp.o: EdgeDetector.h
 CMakeFiles/vision.dir/FieldLinesDetector.cpp.o: FieldLinesDetector.cpp
 CMakeFiles/vision.dir/FieldLinesDetector.cpp.o: FieldLinesDetector.h
@@ -29,21 +26,12 @@ CMakeFiles/vision.dir/FieldLinesDetector.cpp.o: HoughConstants.h
 CMakeFiles/vision.dir/FieldLinesDetector.cpp.o: HoughLine.h
 CMakeFiles/vision.dir/FieldLinesDetector.cpp.o: HoughSpace.h
 CMakeFiles/vision.dir/FieldLinesDetector.cpp.o: HoughVisualLine.h
-CMakeFiles/vision.dir/FieldLinesDetector.cpp.o: Utility.h
-CMakeFiles/vision.dir/FieldLinesDetector.cpp.o: VisualCorner.h
-CMakeFiles/vision.dir/FieldLinesDetector.cpp.o: VisualDetection.h
-CMakeFiles/vision.dir/FieldLinesDetector.cpp.o: VisualLandmark.h
-CMakeFiles/vision.dir/FieldLinesDetector.cpp.o: VisualLine.h
-CMakeFiles/vision.dir/FieldLinesDetector.cpp.o: VisualObject.h
 
 CMakeFiles/vision.dir/Gradient.cpp.o: ConcreteLandmark.h
-CMakeFiles/vision.dir/Gradient.cpp.o: ConcreteLine.h
 CMakeFiles/vision.dir/Gradient.cpp.o: Gradient.cpp
 CMakeFiles/vision.dir/Gradient.cpp.o: Gradient.h
-CMakeFiles/vision.dir/Gradient.cpp.o: HoughLine.h
 CMakeFiles/vision.dir/Gradient.cpp.o: Utility.h
 CMakeFiles/vision.dir/Gradient.cpp.o: VisualLandmark.h
-CMakeFiles/vision.dir/Gradient.cpp.o: VisualLine.h
 
 CMakeFiles/vision.dir/HoughLine.cpp.o: Gradient.h
 CMakeFiles/vision.dir/HoughLine.cpp.o: HoughConstants.h
@@ -70,19 +58,15 @@ CMakeFiles/vision.dir/HoughVisualLine.cpp.o: HoughLine.h
 CMakeFiles/vision.dir/HoughVisualLine.cpp.o: HoughVisualLine.cpp
 CMakeFiles/vision.dir/HoughVisualLine.cpp.o: HoughVisualLine.h
 
-CMakeFiles/vision.dir/VisionModule.cpp.o: ConcreteCorner.h
-CMakeFiles/vision.dir/VisionModule.cpp.o: ConcreteLandmark.h
-CMakeFiles/vision.dir/VisionModule.cpp.o: ConcreteLine.h
+CMakeFiles/vision.dir/Utility.cpp.o: ConcreteLandmark.h
+CMakeFiles/vision.dir/Utility.cpp.o: Utility.cpp
+CMakeFiles/vision.dir/Utility.cpp.o: Utility.h
+CMakeFiles/vision.dir/Utility.cpp.o: VisualLandmark.h
+
 CMakeFiles/vision.dir/VisionModule.cpp.o: FieldLinesDetector.h
 CMakeFiles/vision.dir/VisionModule.cpp.o: Gradient.h
 CMakeFiles/vision.dir/VisionModule.cpp.o: HoughLine.h
 CMakeFiles/vision.dir/VisionModule.cpp.o: HoughVisualLine.h
-CMakeFiles/vision.dir/VisionModule.cpp.o: Utility.h
 CMakeFiles/vision.dir/VisionModule.cpp.o: VisionModule.cpp
 CMakeFiles/vision.dir/VisionModule.cpp.o: VisionModule.h
-CMakeFiles/vision.dir/VisionModule.cpp.o: VisualCorner.h
-CMakeFiles/vision.dir/VisionModule.cpp.o: VisualDetection.h
-CMakeFiles/vision.dir/VisionModule.cpp.o: VisualLandmark.h
-CMakeFiles/vision.dir/VisionModule.cpp.o: VisualLine.h
-CMakeFiles/vision.dir/VisionModule.cpp.o: VisualObject.h
 

@@ -11,10 +11,8 @@ namespace vision {
 
 #include "Common.h"
 #include "Structs.h"
-#include "VisualLine.h"
 #include "VisionDef.h"
 #include "VisualLandmark.h"
-#include "VisualLine.h"
 #include "NBMath.h"
 
 // This class contains static utility functions which are used in many different
@@ -48,15 +46,6 @@ public:
     static const bool collinear(const point<int> &a, const point <int> &b,
                                 const point <int> &c);
 
-    // Returns true if the point is in the rectangle formed from the
-    // VisualLine's endpoints
-    static const bool between(const VisualLine& line,
-                              const point <int>& p);
-
-
-    static const bool between(const VisualLine& line,
-                              const linePoint& p);
-
     // @return True when a is between b and c (in the bounding box
     // formed by them)
     static bool between(const point<int>& a,
@@ -72,24 +61,10 @@ public:
     static const bool intersectProp(const point<int> &a, const point<int> &b,
                                     const point<int> &c, const point<int> &d);
 
-    static const bool intersectProp(const VisualLine& line1,
-                                    const VisualLine& line2);
-
-    static const point<int> getPointFartherFromCorner(const VisualLine &l,
-                                                      int cornerX,
-                                                      int cornerY);
-
-
-    static const point<int> getCloserEndpoint(const VisualLine& l,
-                                              int x, int y);
-    static const point<int> getCloserEndpoint(const VisualLine& l,
-                                              const point<int>& p);
-
     //static const float hypot(const float a, const float b);
 
     // get slope given x1,y1 and x2,y2
     static float getSlope(int x1, int y1, int x2, int y2);
-    static float getSlope(const VisualLine& line);
 
 
     static float getPerpenSlope(float slope);
@@ -104,7 +79,7 @@ public:
     static const float getLength(const point <float> &p1,
                                  const point <float> &p2);
     static const float getLength(const point <int> &p1,
-                                 const point < int> &p2);
+                                 const point <int> &p2);
 
     // Returns the square of the length for efficiency purposes
     static const float getLength2(const float x1, const float y1,
@@ -112,30 +87,15 @@ public:
     static const float getLength2(const int x1, const int y1,
                                   const int x2, const int y2);
 
-    // get angle between two lines
-    // http://www.tpub.com/math2/5.htm
-    static float getAngle(const VisualLine& line1, const VisualLine& line2);
-
     // Get the angle between the horizontal axis and the line specified by
     // (x1,y1),(x2,y2)
     static float getAngle(int x1, int y1, int x2, int y2);
 
-    static float getAngle(const VisualLine& line1);
-
-    static float getAbsoluteAngle(const point<int>& intersection,
-                                  const VisualLine& line1,
-                                  const VisualLine& line2);
-
     // get y-coord with given x-coord, slope, and y-intercept
     static int getLineY(int x, float y_intercept, float slope);
-    // get y-coord with given x-coord given a line
-    static int getLineY(int x, const VisualLine &aLine);
 
     // get x-coord with given y-coord, slope, and y-intercept
     static int getLineX(int y, float y_intercept, float slope);
-    // get x-coord with given y-coord and a line
-    static int getLineX(int y, const VisualLine &aLine);
-
 
     // get y-intercept given line slope plus a point the line goes through
     static float getInterceptY(int x1, int y1, float slope);
@@ -182,12 +142,6 @@ public:
                                       int orthoBuff,
                                       int paraBuff);
 
-
-    static BoundingBox getBoundingBox(const VisualLine& l, int orthogonalRadius,
-                                      int parallelRadius);
-
-
-
     // Determine whether a vertical line segment intersects a line segment
     // Keyword parameters:
     // plumbTop           the (x,y) coordinate of the top of the plumb line
@@ -210,17 +164,12 @@ public:
     // (NO_INTERSECTION, NO_INTERSECTION) otherwise.
     // if they do not intersect.  (since we are only concerned  about
     // intersections that appear on the screen, this will not be a problem)
-    static const point<int> getIntersection(const VisualLine& line1,
-                                            const VisualLine& line2);
-
 
     static const point <int> getIntersection(const point<int> line1Start,
+
                                              const point<int> line1End,
                                              const point<int> line2Start,
                                              const point<int> line2End);
-
-    static float findLinePointDistanceFromStart(const point <int> &p,
-                                                const VisualLine &aLine);
 
     static float findLinePointDistanceFromStart(const point <int> &p,
                                                 const point<int> &lineStart,
@@ -229,15 +178,6 @@ public:
 
     static const bool tValueInMiddleOfLine(const float t1, const float length,
                                            const float minExtendDistance);
-
-    // Calculate how well the point fits to the line.
-    // Return distance between point and line evaluated at same x or y
-    // (depending on orientation of the line)
-    static float getPointDeviation(const VisualLine &aLine,
-								   const linePoint &point);
-    static float getPointDeviation(const VisualLine &aLine, const int x,
-								   const int y);
-
 
     // A closed polygon contains a point if and only if a plumb line
     // dropped down from the point passes through (intersects) an odd number of
@@ -259,27 +199,6 @@ public:
     static const std::string getDistCertaintyString(int _cert);
 
     static const std::string getCornerIDString(int _id);
-
-	static const point<int> findCloserEndpoint(const VisualLine&,
-											   const point<int>& intersection);
-
-    // Returns the angle between two lines using their bearing from the robot
-    static float getGroundAngle(const VisualLine& line1,
-                                const VisualLine& line2);
-
-    /**
-     * Returns true if pt2 is on the opposite side of the line from the pt1.
-     * If a point is on the line, the other point is not considered "across"
-     * from it.
-     */
-    static bool areAcrossLine(const VisualLine& line,
-                             const point<int>& p1,
-                             const point<int>& p2);
-
-    static float distToLine(const VisualLine& line, const point<int>& point);
-
-    static point<int> getClosestPointOnLine(const VisualLine& line,
-                                            const point<int>& pt);
 
     // Get closest point to point a which is on line from b->c
     static inline point<int> getClosestPointOnLine(const point<int>& a,
@@ -318,10 +237,6 @@ public:
 
         return point<int>(perp_x, perp_y);
     }
-
-    static point<int> getClosestLinePoint(const VisualLine& line,
-                                          const point<int>& pt);
-
 
     // Helper method that just returns whether the thresholded color is a
     // green color

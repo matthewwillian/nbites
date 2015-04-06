@@ -560,7 +560,6 @@ class OutPortal
   Message<T> message_;    // The current message on this output
 
   Module& module_;        // The module containing this output
-
 public:
   OutPortal(Module& m) : message_(0), module_(m) {}
   // effect   Construct output on specified module

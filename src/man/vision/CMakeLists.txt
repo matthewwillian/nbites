@@ -22,6 +22,7 @@ SET( FIELD_LINES_SRCS
   HoughVisualLine
   HoughVisualCorner
   HoughLine
+  Utility
   )
 
 SET( VISION_SRCS 

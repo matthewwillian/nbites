@@ -2,7 +2,6 @@
 #include <iostream>
 #include <mmintrin.h>
 #include <string.h>
-#include "Utility.h"
 
 using std::cout;
 using std::endl;
@@ -138,7 +137,7 @@ void Gradient::createSegment(const point<int>& l,
     double x0 = l.x;
     double y0 = l.y;
 
-    float length = Utility::getLength(l,r);
+    float length = Utility::getLength(l,r); //TODO I need to replace this function
 
     float xDiff = static_cast<float>(r.x - l.x)/length;
     float yDiff = static_cast<float>(r.y - l.y)/length;

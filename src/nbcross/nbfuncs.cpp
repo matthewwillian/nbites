@@ -12,6 +12,7 @@
 #include "Images.h"
 #include "image/ImageConverterModule.cpp"
 #include "RoboGrams.h"
+#include "vision/VisionModule.cpp"
 
 std::vector<nbfunc_t> FUNCS;
 
@@ -62,13 +63,15 @@ int CrossBright_func() {
 }
 
 int HoughTest_func() {
+
     assert(args.size() == 1);
     printf("HoughTest_func()\n");
 
+    
     logio::log_t log = logio::copyLog(&args[0]);
-
     int width = 640;
     int height = 480;
+
     messages::YUVImage image(log.data, width, height, width);
     portals::Message<messages::YUVImage> message(&image);
     man::image::ImageConverterModule converterModule;
@@ -76,18 +79,56 @@ int HoughTest_func() {
     converterModule.imageIn.setMessage(message);
     converterModule.run();
 
-    const messages::PackedImage16* yImage = converterModule.yImage.getMessage(true).get();
+    const messages::PackedImage<short unsigned int>* yImage = converterModule.yImage.getMessage(true).get();
+    logio::log_t yRet;
 
-    man::image::VisionModule visionModule;
+    std::string yName = "type=YUVImage encoding=[Y16] width=";
+    yName += std::to_string(yImage->width());
+    yName += " height=";
+    yName += std::to_string(yImage->height());
+
+    yRet.desc = (char*)malloc(yName.size()+1);
+    memcpy(yRet.desc, yName.c_str(), yName.size() + 1);
+
+    yRet.dlen = yImage->width() * yImage->height() * 2;
+    yRet.data = (uint8_t*)malloc(yRet.dlen);
+    memcpy(yRet.data, yImage->pixelAddress(0, 0), yRet.dlen);
+
+    rets.push_back(yRet);
+
+    std::cout << "TEST0" << std::endl;
+    man::vision::VisionModule visionModule;
+    std::cout << "TEST1" << std::endl;
     portals::Message<messages::PackedImage16> message2(yImage);
+    std::cout << "TEST3" << std::endl;
     visionModule.topYImage.setMessage(message2);
+    std::cout << "TEST4" << std::endl;
     visionModule.run();
+    std::cout << "TEST5" << std::endl;
 
-    free(log.desc);
-    log.desc = (char*)malloc(name.size() + 1);
-    memcpy(log.desc, name.c_str(), name.size() +1);
+    const messages::Lines* lines = visionModule.houghLineList.getMessage(true).get();
 
-    rets.push_back(log);
+    std::cout << "TEST6" << std::endl;
+
+    std::string name = "type=proto-VisionField";
+
+    logio::log_t ret1;
+
+    std::cout << "TEST6.1" << std::endl;
+    ret1.desc = (char *)malloc(name.size() + 1);
+    std::cout << "TEST6.2" << std::endl;
+    memcpy(ret1.desc, name.c_str(), name.size() + 1);
+
+    std::cout << "TEST7" << std::endl;
+    std::string data;
+    lines->SerializeToString(&data);
+
+    std::cout << "TEST8" << std::endl;
+    ret1.data = (uint8_t *)malloc(data.size());
+    ret1.dlen = data.size();
+    memcpy(ret1.data, (uint8_t *)data.c_str(), data.size());
+    rets.push_back(ret1);
+    std::cout << "TEST9" << std::endl;
 }
 
 int ImageConverter_func() {
@@ -216,4 +257,10 @@ void register_funcs() {
     ImageConverter.func = ImageConverter_func;
     FUNCS.push_back(ImageConverter);
 
+    //HoughTest
+    nbfunc_t HoughTest;
+    HoughTest.name = "HoughTest";
+    HoughTest.args = {sYUVImage};
+    HoughTest.func = HoughTest_func;
+    FUNCS.push_back(HoughTest);
 }

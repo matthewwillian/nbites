@@ -55,71 +55,6 @@ const bool Utility::collinear(const point<int> &a, const point <int> &b,
     return area2(a, b, c) == 0;
 }
 
-// Returns true if the point is in the rectangle formed from the VisualLine's
-// endpoints
-const bool Utility::between(const VisualLine& line,
-                            const point <int>& p) {
-    return
-        // Point is between the endpoints in x direction
-        (p.x >= line.getLeftEndpoint().x && p.x <= line.getRightEndpoint().x) &&
-        // Point is between the endpoints in y direction (note that the the
-        // higher in the image it is, the lower the y coordinate)
-        (p.y >= line.getTopEndpoint().y && p.y <= line.getBottomEndpoint().y);
-}
-
-const bool Utility::between(const VisualLine& line,
-                            const linePoint& p) {
-    const point <int> point(p.x, p.y);
-    return between(line, point);
-}
-
-
-const point<int> Utility::getPointFartherFromCorner(const VisualLine &l,
-                                                    int cornerX,
-                                                    int cornerY) {
-	const point<int> start(l.getStartpoint());
-	const point<int> end(l.getEndpoint());
-    float startPointDistance = getLength(static_cast<float>(start.x),
-                                         static_cast<float>(start.y),
-                                         static_cast<float>(cornerX),
-                                         static_cast<float>(cornerY));
-    float endPointDistance = getLength(static_cast<float>(end.x),
-                                       static_cast<float>(end.y),
-                                       static_cast<float>(cornerX),
-                                       static_cast<float>(cornerY));
-    if (startPointDistance < endPointDistance) {
-        return end;
-    }
-    else {
-        return start;
-    }
-}
-
-const point<int> Utility::getCloserEndpoint(const VisualLine& l, int x, int y) {
-	const point<int> start(l.getStartpoint());
-	const point<int> end(l.getEndpoint());
-    float startPointDistance = getLength(static_cast<float>(start.x),
-                                         static_cast<float>(start.y),
-                                         static_cast<float>(x),
-                                         static_cast<float>(y));
-    float endPointDistance = getLength(static_cast<float>(end.x),
-                                       static_cast<float>(end.y),
-                                       static_cast<float>(x),
-                                       static_cast<float>(y));
-
-    if (startPointDistance < endPointDistance) {
-        return start;
-    }
-    else {
-        return end;
-    }
-
-}
-const point<int> Utility::getCloserEndpoint(const VisualLine& l,
-											const point<int>& p) {
-    return getCloserEndpoint(l, p.x, p.y);
-}
-
 
 
 // Returns true if the line segments (a,b) and (c,d) intersect "at a point
@@ -143,58 +78,11 @@ const bool Utility::intersectProp(const point<int> &a, const point<int> &b,
         && (left(c,d,a) ^ left(c,d,b));
 }
 
-const bool Utility::intersectProp(const VisualLine& line1,
-								  const VisualLine& line2)
-{
-    return intersectProp(line1.getStartpoint(), line1.getEndpoint(),
-                         line2.getStartpoint(), line2.getEndpoint());
-}
-
-
 // get slope given x1,y1 and x2,y2
 float Utility::getSlope(int x1, int y1, int x2, int y2) {
     return static_cast<float> (static_cast<float>(y2-y1)/
 							   static_cast<float>(x2-x1));
 }
-
-float Utility::getSlope(const VisualLine& line) {
-	const point<int> start(line.getStartpoint());
-	const point<int> end(line.getEndpoint());
-    return getSlope(start.x,start.y, end.x,end.y);
-}
-
-// See http://mathworld.wolfram.com/LeastSquaresFitting.html for illustration;
-// we calculate vertical (or horizontal) offsets from the line rather than
-// perpendicular offsets
-float Utility::getPointDeviation(const VisualLine &aLine, const int x,
-								 const int y) {
-    // Bigger change in x than in y, nearer to horizontal than vertical
-    if ( abs(aLine.getEndpoint().x - aLine.getStartpoint().x) >
-		 abs(aLine.getEndpoint().y - aLine.getStartpoint().y) ) {
-        float lineY = static_cast<float>(getLineY(x, aLine));
-        return fabs(static_cast<float>(y) - lineY);
-    }
-    // Perfectly vertical; no need to find where the point would hit.
-    // Hack.
-	// @TODO Better way to do this.
-    else if (aLine.getLeftEndpoint().x == aLine.getRightEndpoint().x) {
-        return abs( static_cast<float>(aLine.getLeftEndpoint().x - x) );
-    }
-    // A line that is not perfectly vertical but is more vertical than horizontal
-    else {
-        float lineX = static_cast<float>(getLineX(y, aLine));
-        return abs(static_cast<float>(x) - lineX);
-    }
-}
-
-// Calculate how well the point fits to the line.
-// Return distance between point and line evaluated at same x or y (depending
-// on orientation of the line)
-float Utility::getPointDeviation(const VisualLine &aLine,
-								 const linePoint &point) {
-    return getPointDeviation(aLine, point.x, point.y);
-}
-
 
 // get length of line segment specified by (x1, y1), (x2, y2)
 const float Utility::getLength(const int x1, const int y1,
@@ -249,37 +137,6 @@ const float Utility::getLength2(const int x1, const int y1,
 
 // get acute angle between two lines
 // http://www.tpub.com/math2/5.htm
-float Utility::getAngle(const VisualLine& line1, const VisualLine& line2) {
-    const float denom = (1 + line1.getSlope() * line2.getSlope());
-    const float numer = (line2.getSlope() - line1.getSlope());
-    const float quotient = numer/denom;
-    if (isnan(quotient)){
-        if(numer > 0.0f)
-            return M_PI_FLOAT * 0.5f * TO_DEG;
-        else
-            return -M_PI_FLOAT * 0.5f * TO_DEG;
-    }
-    return TO_DEG * atan(quotient);
-}
-
-float Utility::getAbsoluteAngle(const point<int>& intersection,
-                                const VisualLine& line1,
-                                const VisualLine& line2)
-{
-    const point<int> end1 = getPointFartherFromCorner(line1,
-                                                      intersection.x,
-                                                      intersection.y);
-
-    const point<int> end2 = getPointFartherFromCorner(line2,
-                                                      intersection.x,
-                                                      intersection.y);
-
-    const float a = getLength(intersection, end1);
-    const float b = getLength(intersection, end2);
-    const float c = getLength(end1, end2);
-
-    return acos((a*a + b*b - c*c)/(2*a*b)) * TO_DEG;
-}
 
 float Utility::getAngle(int x1, int y1, int x2, int y2) {
     if (x2 == x1) {
@@ -297,10 +154,6 @@ int Utility::getLineY(int x, float y_intercept, float slope) {
     return NBMath::ROUND( y_intercept + slope*static_cast<float>(x) );
 }
 
-int Utility::getLineY(int x, const VisualLine &aLine) {
-    return getLineY(x, aLine.getYIntercept(), aLine.getSlope());
-}
-
 // VERY IMPORTANT: Ensure that the slope is not infinity!
 // get x-coord with given y-coord, slope, and y-intercept
 int Utility::getLineX(int y, float y_intercept, float slope) {
@@ -311,11 +164,6 @@ int Utility::getLineX(int y, float y_intercept, float slope) {
     return 0;
 }
 
-int Utility::getLineX(int y, const VisualLine &aLine) {
-    return getLineX(y, aLine.getYIntercept(), aLine.getSlope());
-}
-
-
 // get y-intercept given line slope plus a point the line goes through
 float Utility::getInterceptY(int x1, int y1, float slope){
     return ( -slope*static_cast<float>(x1) + static_cast<float>(y1) );
@@ -325,11 +173,6 @@ float Utility::getInterceptY(int x1, int y1, float slope){
 // or (NO_INTERSECTION, NO_INTERSECTION)
 // if they do not intersect.  (since we are only concerned  about
 // intersections that appear on the screen, this will not be a problem)
-const point<int> Utility::getIntersection(const VisualLine& line1,
-                                          const VisualLine& line2) {
-    return getIntersection(line1.getStartpoint(), line1.getEndpoint(),
-                           line2.getStartpoint(), line2.getEndpoint());
-}
 
 const point <int> Utility::getIntersection(const point<int> line1Start,
                                            const point<int> line1End,
@@ -535,21 +378,6 @@ BoundingBox Utility::getBoundingBox(int x1, int y1, int x2, int y2,
 
 }
 
-
-// See explanation above as to what the bounding box method does in general.
-// This fits a bounding box to the least squares equation of the line passed
-// in.
-BoundingBox Utility::getBoundingBox(const VisualLine& aLine,
-                                    int orthogonalRadius,
-                                    int parallelRadius) {
-    const point<int> start(aLine.getStartpoint());
-    const point<int> end(aLine.getEndpoint());
-    return getBoundingBox(start.x, start.y,
-                          end.x, end.y,
-                          orthogonalRadius, parallelRadius);
-}
-
-
 // Determine whether a vertical line segment intersects a line segment
 // Keyword parameters:
 // plumbTop           the (x,y) coordinate of the top of the plumb line
@@ -627,14 +455,6 @@ pair<int, int> Utility::plumbIntersection(point <int> plumbTop,
 // Since this relies on parametrization, we could end up with infinite slope.
 // For better accuracy, we use x to find t when the line is less than 45 degs
 // from horizontal and y otherwise.
-float Utility::findLinePointDistanceFromStart(const point <int> &p,
-                                              const VisualLine &aLine) {
-
-    return findLinePointDistanceFromStart(p, aLine.getStartpoint(),
-                                          aLine.getEndpoint(),
-                                          aLine.getLength());
-}
-
 
 float Utility::findLinePointDistanceFromStart(const point <int> &p,
                                               const point<int> &lineStart,
@@ -804,97 +624,6 @@ const string Utility::getDistCertaintyString(int _cert) {
     default: return "Don't know what certainty you're talking about, mate";
     }
 }
-
-const point<int> Utility::findCloserEndpoint(const VisualLine& line,
-                                             const point<int>& intersection)
-{
-    const point<int> start(line.getStartpoint());
-    const point<int> end(line.getEndpoint());
-    if (Utility::getLength(static_cast<float>(intersection.x),
-                           static_cast<float>(intersection.y),
-                           static_cast<float>(start.x),
-                           static_cast<float>(start.y) ) <
-        Utility::getLength(static_cast<float>(intersection.x),
-                           static_cast<float>(intersection.y),
-                           static_cast<float>(end.x),
-                           static_cast<float>(end.y)) ) {
-        return start;
-    } else {
-        return end;
-    }
-}
-
-// Returns the angle in the world frame of the two lines.
-// Always returns a value between 0 and PI/2
-float Utility::getGroundAngle(const VisualLine& line1, const VisualLine& line2)
-{
-    const float angle = NBMath::subPIAngle( fabs(line1.getBearing() -
-                                                 line2.getBearing()));
-    return min(fabs(M_PI_FLOAT - angle), fabs(angle));
-}
-
-bool Utility::areAcrossLine(const VisualLine& line, const point<int>& p1,
-                            const point<int>& p2)
-{
-    const int y1 = getLineY(p1.x, line);
-    const int y2 = getLineY(p2.x, line);
-
-    if ((p1.y <= y1 && p2.y <= y2) ||
-        (p1.y >= y1 && p2.y >= y2)){
-        return false;
-    }
-    return true;
-}
-
-// Distance from a point to a line
-// from http://local.wasp.uwa.edu.au/~pbourke/geometry/pointline/
-float Utility::distToLine(const VisualLine& line, const point<int>& pt)
-{
-    return getLength(getClosestPointOnLine(line, pt) , pt);
-}
-
-point<int> Utility::getClosestPointOnLine(const VisualLine& line,
-                                         const point<int>& pt)
-{
-    const point<int> start = line.getStartpoint();
-    const point<int> end = line.getEndpoint();
-
-    //u = (x3 - x1)(x2 - x1) + (y3 - y1)(y2 - y1) / line.length;
-    const float u = (static_cast<float>((pt.x - start.x)*(end.x - start.x) +
-                                       (pt.y - start.y)*(end.y - start.y))
-                     / pow(line.getLength(),2));
-    const point<int> close (static_cast<int>(
-                                static_cast<float>(start.x) +
-                                u * static_cast<float>(end.x - start.x)),
-
-                            static_cast<int>(
-                                static_cast<float>(start.y) +
-                                u * static_cast<float>(end.y - start.y)));
-    return close;
-}
-
-// Returns the location of the closest line point on the given
-// line to the given point. Could be an endpoint or anywhere in between.
-point<int> Utility::getClosestLinePoint(const VisualLine& line,
-                                        const point<int>& pt)
-{
-    const vector<linePoint> points = line.getPoints();
-    vector<linePoint>::const_iterator i;
-
-    // No point is this far away...@TODO make it nicer
-    float minDist = 99999999.0f;
-    point<int> closest;
-    for (i = points.begin(); i != points.end(); ++i){
-        const float length = getLength(i->x, i->y, pt.x, pt.y);
-        if ( length < minDist){
-            minDist = length;
-            closest.x = i->x;
-            closest.y = i->y;
-        }
-    }
-    return closest;
-}
-
 
 }
 }

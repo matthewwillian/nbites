@@ -8,6 +8,7 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/vision.dir/Gradient.cpp.o"
   "CMakeFiles/vision.dir/HoughVisualLine.cpp.o"
   "CMakeFiles/vision.dir/HoughLine.cpp.o"
+  "CMakeFiles/vision.dir/Utility.cpp.o"
   "CMakeFiles/vision.dir/EdgeDetection.s.o"
   "CMakeFiles/vision.dir/Hough.s.o"
   "CMakeFiles/vision.dir/HoughAlt.s.o"

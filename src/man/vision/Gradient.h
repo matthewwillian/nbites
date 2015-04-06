@@ -8,6 +8,7 @@
 #include "VisionDef.h"
 #include "Common.h"
 #include "Structs.h"
+#include "Utility.h"
 
 namespace man {
 namespace vision {

@@ -3,6 +3,8 @@
 #include "Profiler.h"
 #include <iostream>
 
+//TODO errors from here do not output to the command line
+
 using namespace portals;
 
 namespace man{
@@ -24,7 +26,8 @@ VisionModule::VisionModule() : Module(),
                                vision_robot(base()),
                                vision_obstacle(base()),
                                topOutPic(base()),
-                               botOutPic(base())
+                               botOutPic(base()),
+                               houghLineList(base())
 #ifdef USE_LOGGING
                                joint_angles_out(base()),
                                inertial_state_out(base())
@@ -38,6 +41,7 @@ VisionModule::~VisionModule()
 
 void VisionModule::run_()
 {
+    std::cout << "TEST 4.1" << std::endl;
     topThrImage.latch();
     topYImage.latch();
     topUImage.latch();
@@ -49,24 +53,56 @@ void VisionModule::run_()
     joint_angles.latch();
     inertial_state.latch();
 
+    std::cout << "TEST 4.2" << std::endl;
     PROF_ENTER(P_VISION);
 
     PROF_EXIT(P_VISION);
 
+    std::cout << "TEST 4.3" << std::endl;
     messages::PackedImage16 image = topYImage.message();
     const uint16_t *pixels = image.pixelAddress(0,0);
     int *void_field_line;
     FieldLinesDetector detector = FieldLinesDetector();
     detector.detect(10, void_field_line, pixels); 
 
+    std::cout << "TEST 4.4" << std::endl;
+    std::list<HoughLine> houghLines = detector.getHoughLines();
+
+
+    std::cout << "TEST 4.5" << std::endl;
+
+    messages::Lines* lines = new messages::Lines;
+
+
+    std::cout << "TEST 4.6" << std::endl;
+
+    while(houghLines.size() > 0) {
+    std::cout << "TEST 4.6.1" << std::endl;
+        HoughLine hLine = houghLines.front();
+    std::cout << "TEST 4.6.2" << std::endl;
+        messages::Lines_Line* bLine;
+    std::cout << "TEST 4.6.2.1" << std::endl;
+        bLine = lines->add_line();
+
+    std::cout << "TEST 4.6.3" << std::endl;
+        bLine->set_radius(hLine.getRadius());
+        bLine->set_angle(hLine.getAngle());
+
+        houghLines.pop_front();
+    }
+
+    std::cout << "TEST 4.7" << std::endl;
+    houghLineList.setMessage(Message<messages::Lines>(lines));
+
+    std::cout << "TEST 4.8" << std::endl;
 #ifdef OFFLINE
-    portals::Message<messages::ThresholdImage> top, bot;
-    top = new messages::ThresholdImage(vision->thresh->betterDebugImage, 320, 240, 320);
-    bot = new messages::ThresholdImage(vision->thresh->thresholdedBottom, 320, 240, 320);
-
-
-    topOutPic.setMessage(top);
-    botOutPic.setMessage(bot);
+//    portals::Message<messages::ThresholdImage> top, bot;
+//    top = new messages::ThresholdImage(vision->thresh->betterDebugImage, 320, 240, 320);
+//    bot = new messages::ThresholdImage(vision->thresh->thresholdedBottom, 320, 240, 320);
+//
+//
+//    topOutPic.setMessage(top);
+//    botOutPic.setMessage(bot);
 
 #endif
 

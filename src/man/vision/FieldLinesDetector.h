@@ -14,7 +14,6 @@ namespace vision {
 }
 
 #include "HoughLine.h"
-#include "VisualCorner.h" //TODO we don't use this anymore
 #include "HoughVisualLine.h"
 
 namespace man {
@@ -42,9 +41,6 @@ public:
     std::vector<HoughVisualLine> getLines() {
         return mLines;
     };
-    std::list<VisualCorner> getCorners() {
-        return mCorners;
-    }
 
 private:
     void findHoughLines(int upperBound,
@@ -57,7 +53,6 @@ private:
 
     std::list<std::pair<HoughLine, HoughLine> > mHoughLines;
     std::vector<HoughVisualLine> mLines;
-    std::list<VisualCorner> mCorners;
     boost::shared_ptr<HoughSpace> mHough;
 };
 

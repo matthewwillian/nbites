@@ -1,7 +1,7 @@
 #pragma once
 
 //#include <vector>
-//#include <list>
+#include <list>
 
 #include "RoboGrams.h"
 
@@ -13,6 +13,8 @@
 #include "VisionField.pb.h"
 #include "BallModel.pb.h"
 #include "VisionRobot.pb.h"
+#include "VisionField.pb.h"
+
 #include "FieldLinesDetector.h"
 
 #include <boost/shared_ptr.hpp>
@@ -47,6 +49,8 @@ public:
 
     portals::OutPortal<messages::ThresholdImage> topOutPic;
     portals::OutPortal<messages::ThresholdImage> botOutPic;
+
+    portals::OutPortal<messages::Lines> houghLineList;
 
     /* In order to keep logs synced up, joint angs and inert states are passed 
      * thru the vision system. Joint angles are taken at around 100 hz, but 
