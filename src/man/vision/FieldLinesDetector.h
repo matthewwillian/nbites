@@ -3,7 +3,10 @@
 
 #include <list>
 #include <vector>
+<<<<<<< HEAD:src/man/vision/FieldLinesDetector.h
 #include <boost/shared_ptr.hpp>
+=======
+>>>>>>> 159a79201bf410f78d48081ddcfa344bf420bc9c:src/man/vision/FieldLinesDetector.h
 
 namespace man {
 namespace vision {
@@ -38,15 +41,17 @@ public:
     std::list<HoughLine> getHoughLines() const;
 
     // FieldLines interface
-    std::vector<HoughVisualLine> getLines() {
-        return mLines;
+    std::vector<FieldLine> getLines() {
+        return mFieldLines;
     };
 
 private:
     void findHoughLines(int upperBound,
                         int* field_edge,
                         const uint16_t *img);
+    void refineHoughLines();
     void findFieldLines();
+
 
     boost::shared_ptr<EdgeDetector> mEdges;
     boost::shared_ptr<Gradient> mGradient;

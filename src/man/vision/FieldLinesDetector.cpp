@@ -14,7 +14,8 @@ namespace vision {
 FieldLinesDetector::FieldLinesDetector() :
     mEdges(new EdgeDetector),
     mGradient(new Gradient),
-    mHoughLines()
+    mHoughLines(),
+    mFieldLines()
 {
     mHough = HoughSpace::create();
 }
@@ -34,6 +35,7 @@ void FieldLinesDetector::detect(int upperBound,
     upperBound = min(max(0, upperBound), IMAGE_HEIGHT-3);
 
     findHoughLines(upperBound, field_edge, img);
+    refineHoughLines();
     findFieldLines();
 }
 
@@ -51,7 +53,24 @@ void FieldLinesDetector::findHoughLines(int upperBound,
 {
     mGradient->reset();
     mEdges->detectEdges(upperBound, field_edge, img, *mGradient);
-    mHoughLines = mHough->findLines(*mGradient);
+    mHough->findLines(*mGradient, mHoughLines);
+}
+
+void FieldLinesDetector::refineHoughLines()
+{
+    RefinementParams firstFit(FuzzyThr(0.15, 0.30),
+                              FuzzyThr(2.00, 5.00),
+                              FuzzyThr(4.00, 8.00),
+                              2.0);
+    RefinementParams secondFit(FuzzyThr(0.15, 0.30),
+                               FuzzyThr(2.00, 5.00),
+                               FuzzyThr(4.00, 8.00),
+                               2.0);
+
+    for (int i = 0; i < mHoughLines.size(); i++) {
+        mHoughLines[i].refine(*mGradient, firstFit);
+        mHoughLines[i].refine(*mGradient, secondFit);
+    }
 }
 
 /**
@@ -60,11 +79,7 @@ void FieldLinesDetector::findHoughLines(int upperBound,
  */
 void FieldLinesDetector::findFieldLines()
 {
-    mLines.clear();
-    list<pair<HoughLine, HoughLine> >::const_iterator hl;
-    for(hl = mHoughLines.begin(); hl != mHoughLines.end(); ++hl){
-        mLines.push_back(HoughVisualLine(hl->first, hl->second));
-    }
+    // TODO loop over all pairs of lines that could be field lines
 }
 
 void FieldLinesDetector::setEdgeThreshold(int thresh)

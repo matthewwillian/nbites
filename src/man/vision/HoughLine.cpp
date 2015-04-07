@@ -13,11 +13,10 @@ namespace man {
 namespace vision {
 
 HoughLine::HoughLine() :
-    rIndex(0), tIndex(0), r(0), t(0), score(0),
-    sinT(0), cosT(0), didSin(false), didCos(false)
-{
-
-}
+    rIndex(0), tIndex(0), r(0), t(0), score(0), u0(-200), u1(200)
+    sinT(0), cosT(0), didSin(false), didCos(false), Ux(cos(t))
+    Uy(sin(t))
+{}
 
 HoughLine::HoughLine(int _r_Indexbit, int _t_Indexbit, int _score) :
     rIndex(_r_Indexbit), tIndex(_t_Indexbit),
@@ -127,5 +126,15 @@ void HoughLine::findLineImageIntersects(const HoughLine& line,
     }
 }
 
+Line HoughLine::transform(FixedCameraParams fcp)
+{
+    cs = cos(fcp.roll);
+    sn = sin(fcp.roll);
+    
+    T = atan2(Ux * cs - Uy * sn, Ux * sn + Uy * cos);
+
+    point<double> imagePoint = imageCoords(r * Ux, r * Uy);
+    return Line(RIndex);
+}
 }
 }

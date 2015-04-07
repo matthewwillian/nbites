@@ -1,12 +1,10 @@
-
-
-############################ PROJECT NAME
-# The name of this cmake project
+############################ PROJECT DESCRIPTION
 PROJECT( VISION )
 CMAKE_MINIMUM_REQUIRED( VERSION 2.8.3 )
 
 ADD_DEFINITIONS( -mmmx )
 
+<<<<<<< HEAD
 INCLUDE_DIRECTORIES( . )
 
 
@@ -32,6 +30,20 @@ SET( VISION_SRCS
          #         VisualLine
          #         VisualDetector
                  )
+=======
+############################ PROJECT SOURCES FILES
+SET( VISION_SRCS 
+    CornerDetector
+    EdgeDetector
+    FieldLinesDetector
+    Gradient
+    HoughLine
+    HoughSpace
+    HoughSpaceImpl
+    HoughVisualLine
+    WeightedFit
+    )
+>>>>>>> 159a79201bf410f78d48081ddcfa344bf420bc9c
 
 # Add the assembly files if we're not on Mac OSX
 IF (UNIX AND NOT APPLE)
@@ -46,9 +58,7 @@ ENDIF()
 
 
 ############################ CHECK LIBRARY / EXECUTABLE OPTION
-# Configure the output execuatable or shared library, and the install
-# commands
-
+# Configure the output execuatable or shared library, and the install commands
 # Add static library target
 ADD_LIBRARY(
   vision
